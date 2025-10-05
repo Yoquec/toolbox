@@ -1,4 +1,9 @@
-{ stdenv, ghc, ... }:
+{
+  lib,
+  stdenv,
+  ghc,
+  ...
+}:
 let
   pname = "whichdate";
   binaryName = "wd";
@@ -15,5 +20,9 @@ stdenv.mkDerivation {
     mkdir -p $out/bin
     cp ${pname} $out/bin/${binaryName}
   '';
-  license = stdenv.lib.licenses.gpl3;
+  meta = {
+    description = "CLI tool that turns natural language relative dates into timestamps.";
+    homepage = "https://github.com/yoquec/toolbox";
+    license = lib.licenses.gpl3;
+  };
 }

@@ -14,7 +14,7 @@
       system:
       let
         pkgs = inputs.nixpkgs.legacyPackages.${system};
-        whichdate = pkgs.callPackage ./whichdate/default.nix { };
+        whichdate = pkgs.callPackage ./whichdate { };
       in
       {
         packages = {
