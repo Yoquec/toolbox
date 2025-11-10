@@ -11,6 +11,7 @@
       systems = import inputs.systems;
       imports = [
         ./whichdate/flake-module.nix
+        ./texttransform/flake-module.nix
         flake-parts.flakeModules.easyOverlay
       ];
     };
