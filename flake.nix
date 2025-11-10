@@ -3,43 +3,15 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default-linux";
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
   outputs =
-    { systems, ... }@inputs:
-    inputs.flake-utils.lib.eachSystem (import systems) (
-      system:
-      let
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
-        whichdate = pkgs.callPackage ./whichdate { };
-      in
-      {
-        packages = {
-          inherit whichdate;
-        };
-
-        apps = {
-          whichdate = {
-            type = "app";
-            program = "${whichdate}/bin/wd";
-          };
-        };
-
-        devShells = {
-          haskell = pkgs.mkShell {
-            packages = with pkgs; [
-              ghc
-              haskell-language-server
-            ];
-          };
-        };
-
-        overlays.default = _: _: {
-          inherit whichdate;
-        };
-      }
-    );
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = import inputs.systems;
+      imports = [
+        ./whichdate/flake-module.nix
+        flake-parts.flakeModules.easyOverlay
+      ];
+    };
 }
