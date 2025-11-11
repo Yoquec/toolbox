@@ -1,8 +1,12 @@
 {
   perSystem =
     { pkgs, ... }:
+    let
+      whichdate = pkgs.callPackage ./. { };
+    in
     {
-      packages.whichdate = pkgs.callPackage ./. { };
+      overlayAttrs = { inherit whichdate; };
+      packages = { inherit whichdate; };
       devShells.whichdate = pkgs.callPackage ./shell.nix { };
     };
 }
