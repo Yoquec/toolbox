@@ -26,7 +26,8 @@ func TestInvoke(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			actual := superscript.Invoke(tt.in)
+			command := new(superscript.Command)
+			actual := command.Invoke(tt.in)
 			if tt.expectedOut != actual {
 				t.Fatalf("Expected %q, got %q", tt.expectedOut, actual)
 			}
